@@ -2,10 +2,10 @@
 % Please edit documentation in R/lexis.lifeline.R
 \name{lexis.lifeline}
 \alias{lexis.lifeline}
-\title{Plot lifelines into a Lexis grid}
+\title{Deprecated. Plot lifelines into a Lexis grid}
 \usage{
-lexis.lifeline(lg, entry, exit = NA, lineends = F, colour = "red",
-  alpha = 1, lwd = 0.5)
+lexis.lifeline(lg, entry, exit = NA, lineends = F,
+  colour = lpr_colours()[7], alpha = 1, lwd = 0.5)
 }
 \arguments{
 \item{lg, }{an existing object originally created with \code{lexis.grid()}.}
@@ -32,12 +32,13 @@ Add lifelines to an existing Lexis grid.
 Takes an existing Lexis grid and adds lifelines to the grid. Input can be a single dates or dates from a vector.
 }
 \examples{
+\dontrun{
 lg <- lexis.grid(year.start = 1900, year.end = 1905, age.start = 0, age.end = 5)
 lexis.lifeline(lg = lg, entry = "1901-09-23")
 lexis.lifeline(lg = lg, entry = "1901-09-23", exit = "1904-03-03")
+}
 
 }
 \author{
 Philipp Ottolinger
 }
-

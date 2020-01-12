@@ -1,4 +1,4 @@
-#' Plot lifelines into a Lexis grid
+#' Deprecated. Plot lifelines into a Lexis grid
 #' 
 #' Add lifelines to an existing Lexis grid.
 #' 
@@ -16,18 +16,21 @@
 #' @importFrom utils tail
 #' @export lexis.lifeline
 #' @examples 
+#' \dontrun{
 #' lg <- lexis.grid(year.start = 1900, year.end = 1905, age.start = 0, age.end = 5)
 #' lexis.lifeline(lg = lg, entry = "1901-09-23")
 #' lexis.lifeline(lg = lg, entry = "1901-09-23", exit = "1904-03-03")
+#' }
 #' 
-lexis.lifeline <- function(lg, entry, exit = NA, lineends = F, colour = "red", alpha = 1, lwd = 0.5) {
+lexis.lifeline <- function(lg, entry, exit = NA, lineends = F, colour = lpr_colours()[7], alpha = 1, lwd = 0.5) {
+  .Deprecated("lexis_lifeline")
   if (!is.ggplot(lg)) { stop("No valid ggplot object.") }
   entry <- as.Date(entry, origin = "1970-01-01")
   exit <- as.Date(exit, origin = "1970-01-01")
-  year.start <- as.Date(ggplot_build(lg)$data[[1]][1,1], origin="1970-01-01")
-  year.end <- as.Date(tail(ggplot_build(lg)$data[[1]]$xend,1), origin = "1970-01-01")
-  age.start <- ggplot_build(lg)$data[[1]][1,3]
-  age.end <- tail(ggplot_build(lg)$data[[1]]$yend,1)
+  year.start <- as.Date(min(ggplot_build(lg)$layout$panel_ranges[[1]]$x.major_source), origin = "1970-01-01")
+  year.end <- as.Date(max(ggplot_build(lg)$layout$panel_ranges[[1]]$x.major_source), origin = "1970-01-01")
+  age.start <- min(ggplot_build(lg)$layout$panel_ranges[[1]]$y.major_source)
+  age.end <- max(ggplot_build(lg)$layout$panel_ranges[[1]]$y.major_source)
   x <- NULL
   y <- NULL
   xend <- NULL

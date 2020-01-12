@@ -1,4 +1,4 @@
-#' Fill Lexis triangles by HMD data
+#' Deprecated. Fill Lexis triangles by HMD data
 #' 
 #' The function opens an existing Lexis grid and fill the triangles according to data from the Human Mortality Database.
 #' 
@@ -11,7 +11,8 @@
 #' @import ggplot2
 #' @importFrom utils tail
 #' @export lexis.hmd
-#' @examples 
+#' @examples
+#' \dontrun{
 #' library(LexisPlotR)
 #' lg <- lexis.grid(year.start = 1980, year.end = 1985, age.start = 0, age.end = 5)
 #' # Load sample data
@@ -22,14 +23,22 @@
 #' ### Plot data not explicitly present in HMD data
 #' deaths.triangles$RatioMale <- deaths.triangles$Male / deaths.triangles$Total
 #' lexis.hmd(lg, deaths.triangles, "RatioMale")
+#' }
 
 lexis.hmd <- function(lg, hmd.data, column) {
-  year.start <- as.Date(ggplot_build(lg)$data[[1]][1,1], origin="1970-01-01")
-  year_start <- as.numeric(substr(year.start, 1, 4))
-  year.end <- as.Date(tail(ggplot_build(lg)$data[[1]]$xend,1), origin = "1970-01-01")
-  year_end <- as.numeric(substr(year.end, 1, 4))
-  age.start <- ggplot_build(lg)$data[[1]][1,3]
-  age.end <- tail(ggplot_build(lg)$data[[1]]$yend,1)
+  .Deprecated("")
+  # year.start <- as.Date(ggplot_build(lg)$data[[1]][1,1], origin="1970-01-01")
+  # year_start <- as.numeric(substr(year.start, 1, 4))
+  # year.end <- as.Date(tail(ggplot_build(lg)$data[[1]]$xend,1), origin = "1970-01-01")
+  # year_end <- as.numeric(substr(year.end, 1, 4))
+  # age.start <- ggplot_build(lg)$data[[1]][1,3]
+  # age.end <- tail(ggplot_build(lg)$data[[1]]$yend,1)
+  year.start <- as.Date(min(ggplot_build(lg)$layout$panel_ranges[[1]]$x.major_source), origin = "1970-01-01")
+  year_start <- as.numeric(substr(year.start,1,4))
+  year.end <- as.Date(max(ggplot_build(lg)$layout$panel_ranges[[1]]$x.major_source), origin = "1970-01-01")
+  year_end <- as.numeric(substr(year.end,1,4))
+  age.start <- min(ggplot_build(lg)$layout$panel_ranges[[1]]$y.major_source)
+  age.end <- max(ggplot_build(lg)$layout$panel_ranges[[1]]$y.major_source)
   filterYear <- year_start:(year_end - 1)
   filterAge <- age.start:(age.end - 1)
   data <- hmd.data[hmd.data$Year %in% filterYear & hmd.data$Age %in% filterAge,]
